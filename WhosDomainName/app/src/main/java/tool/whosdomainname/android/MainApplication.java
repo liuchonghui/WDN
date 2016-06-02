@@ -7,10 +7,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.android.imageloadercompact.ImageLoaderCompact;
 import com.android.overlay.RunningEnvironment;
-//import com.sina.engine.base.config.EngineConfig;
-//import com.sina.engine.base.manager.EngineManager;
-//import com.sina.request.OkHttpJsonFetcherFactory;
 
 /**
  * @author liu_chonghui
@@ -27,6 +25,8 @@ public class MainApplication extends Application {
 
         super.onCreate();
 
+        ImageLoaderCompact.getInstance().init(this);
+
         if (subSystem == null) {
             subSystem = new RunningEnvironment("R.array.managers",
                     "R.array.tables");
@@ -34,16 +34,6 @@ public class MainApplication extends Application {
             subSystem = RunningEnvironment.getInstance();
         }
         subSystem.onCreate(this);
-
-//        EngineManager.init(this);
-//        EngineManager.getInstance().initConfig(new EngineConfig().setIsEncrypt(true)
-//                .setDebug(true)
-//                .setCid("0")
-//                .setDeviceId("355dbee81a5f1709d905a31c56b72ab15")
-//                .setJsonFetcherFactory(new OkHttpJsonFetcherFactory())
-//                .setPartner_id("10001"));
-
-
         subSystem.run(this);
     }
 
@@ -55,7 +45,7 @@ public class MainApplication extends Application {
 
     @Override
     public void onTerminate() {
-        if(subSystem!=null){
+        if (subSystem != null) {
             subSystem.onTerminate();
         }
         super.onTerminate();
@@ -64,7 +54,7 @@ public class MainApplication extends Application {
     @Override
     public void onLowMemory() {
         Log.d("ENV", "onLowMemory");
-        if(subSystem!=null){
+        if (subSystem != null) {
             subSystem.onLowMemory();
         }
         super.onLowMemory();
@@ -74,7 +64,7 @@ public class MainApplication extends Application {
     @Override
     public void onTrimMemory(int level) {
         Log.d("ENV", "onTrimMemory[" + level + "]");
-        if (subSystem!=null) {
+        if (subSystem != null) {
             subSystem.onTrimMemory(level);
         }
         super.onTrimMemory(level);
