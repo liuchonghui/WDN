@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/player_page_container"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:clipChildren="false"
+    >
+    <!--<ImageView-->
+        <!--android:id="@+id/player_pager_wallpaper"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--/>-->
+    <com.android.imageloadercompact.CompactImageView
+        xmlns:compact="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/player_pager_wallpaper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <LinearLayout
+        android:id="@+id/player_pager_click_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/player_page_text_area_margin_left"
+        android:layout_marginRight="@dimen/player_page_text_area_margin_right"
+        android:layout_marginTop="@dimen/player_page_text_area_margin_top"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:alpha="0"
+        >
+
+        <TextView
+            android:id="@+id/player_pager_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:textColor="@color/player_page_title_text_color"
+            android:textSize="@dimen/player_page_title_text_size"
+            />
+
+        <TextView
+            android:id="@+id/player_pager_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/player_page_content_text_margin_top"
+            android:lineSpacingExtra="@dimen/player_page_content_text_line_spacing_extra"
+            android:maxWidth="@dimen/player_page_content_text_max_width"
+            android:textColor="@color/player_page_content_text_color"
+            android:textSize="@dimen/player_page_content_text_size"
+            />
+    </LinearLayout>
+</FrameLayout>

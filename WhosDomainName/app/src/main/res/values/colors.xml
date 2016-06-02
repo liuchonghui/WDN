@@ -3,4 +3,30 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name = "menu_item_text_color">#B2FFFFFF</color>
+    <color name="menu_item_text_color_enable">#B2FFFFFF</color>
+    <color name="menu_item_text_color_disable">#50ffffff</color>
+
+    <!-- 100% black -->
+    <color name="primary_text_color">#000000</color>
+    <!-- 70% black -->
+    <color name="black_70">#B3000000</color>
+    <!-- 60% black -->
+    <color name="black_60">#99000000</color>
+    <!-- 50% black -->
+    <color name="black_50">#7F000000</color>
+    <!-- 40% black -->
+    <color name="black_40">#66000000</color>
+    <!-- 15% black -->
+    <color name="list_divider_color">#26000000</color>
+    <!-- 8% black -->
+    <color name="black_8">#14000000</color>
+    <!-- 5% black -->
+    <color name="black_5">#0D000000</color>
+    <!-- 2% black -->
+    <color name="black_2">#05000000</color>
+
+    <!-- white -->
+    <color name="white">#ffffff</color>
 </resources>

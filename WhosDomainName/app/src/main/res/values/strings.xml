@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">谁的域名</string>
+
+    <string name="settings">设置</string>
+    <string name="liked">已收藏</string>
+    <string name="like">收藏</string>
+    <string name="delete">删除</string>
+    <string name="share">分享</string>
+    <string name="apply">应用</string>
+    <string name="lockscreen_wallpaper_changed">锁屏图已更换</string>
 </resources>

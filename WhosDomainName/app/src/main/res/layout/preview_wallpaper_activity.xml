@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mfashiongallery.emag.preview.LockWallpaperPreviewView
+    android:id="@+id/view_pager"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/menu_mask"
+        />
+
+    <com.mfashiongallery.emag.preview.ActionMenus
+        android:id="@+id/menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        >
+    </com.mfashiongallery.emag.preview.ActionMenus>
+
+    <include
+        layout="@layout/loading_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="25dp"
+        android:gravity="center"
+        android:visibility="invisible"/>
+</com.mfashiongallery.emag.preview.LockWallpaperPreviewView>

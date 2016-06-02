@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mfashiongallery.emag.preview.LoadingContainer
+    android:id="@+id/loading_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:visibility="invisible"
+    >
+
+    <FrameLayout
+        android:id="@+id/item_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/item1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_marginBottom="@dimen/loading_item_padding"
+            android:layout_marginRight="@dimen/loading_item_padding"
+            android:alpha="0.9"
+            android:src="@drawable/loading_item"
+            />
+
+        <ImageView
+            android:id="@+id/item2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|bottom"
+            android:layout_marginBottom="@dimen/loading_item_padding"
+            android:layout_marginLeft="@dimen/loading_item_padding"
+            android:alpha="0.9"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:rotation="90"
+            android:src="@drawable/loading_item"
+            />
+
+        <ImageView
+            android:id="@+id/item3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:layout_marginLeft="@dimen/loading_item_padding"
+            android:layout_marginTop="@dimen/loading_item_padding"
+            android:alpha="0.9"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:rotation="180"
+            android:src="@drawable/loading_item"
+            />
+
+        <ImageView
+            android:id="@+id/item4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|top"
+            android:layout_marginRight="@dimen/loading_item_padding"
+            android:layout_marginTop="@dimen/loading_item_padding"
+            android:alpha="0.9"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:rotation="270"
+            android:src="@drawable/loading_item"
+            />
+    </FrameLayout>
+</com.mfashiongallery.emag.preview.LoadingContainer>
