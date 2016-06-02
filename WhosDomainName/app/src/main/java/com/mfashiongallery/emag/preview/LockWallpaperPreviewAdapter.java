@@ -1,6 +1,7 @@
 
 package com.mfashiongallery.emag.preview;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,7 @@ import java.util.List;
 
 import tool.whosdomainname.android.R;
 
+@SuppressLint("NewApi")
 public class LockWallpaperPreviewAdapter extends PagerAdapter {
     private final static String LOG_TAG = "LockWallpaperPreviewAdapter";
     private final static boolean DEBUG = LockWallpaperPreviewActivity.DEBUG;
@@ -222,7 +224,7 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
 //            loadBitmap(pos, image);
                 }
                 title.setText(info.title);
-                content.setText(info.content);
+                content.setText(info.content + "." + position);
             }
         }
 

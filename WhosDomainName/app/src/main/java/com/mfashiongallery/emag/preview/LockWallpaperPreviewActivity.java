@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.android.overlay.ApplicationUncaughtHandler;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mfashiongallery.emag.preview.model.PicEnum;
@@ -33,6 +34,7 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
 //        setCustomizedTheme(miui.R.style.Theme_Dark_NoTitle);
 //        setTheme(R.style.Theme_LockWallpaperPreviewTheme);
         super.onCreate(savedInstanceState);
+        Thread.setDefaultUncaughtExceptionHandler(new ApplicationUncaughtHandler(this));
         setContentView(R.layout.preview_wallpaper_activity);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -97,8 +99,8 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
             info = new WallpaperInfo();
             info.key = String.valueOf(i);
             info.supportLike = true;
-            info.title = String.valueOf(i) + ".This is Title";
-            info.content = String.valueOf(i) + ".This is Content";
+            info.title = String.valueOf(i) + "." + PicEnum.getTitle(i);
+            info.content = String.valueOf(i) + "." + PicEnum.getContent(i);
             info.wallpaperUri = PicEnum.get(i);
             tests.add(info);
         }
