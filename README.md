@@ -1,2 +1,2 @@
 # WhosDomainName
-		remotes/origin/alpha --- for MiGalleryLockScreen test
+		remotes/origin/master --- for WhosDomainName application
