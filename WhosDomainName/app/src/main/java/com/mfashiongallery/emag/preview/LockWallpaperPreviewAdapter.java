@@ -234,13 +234,13 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
 //            viewgroup.removeViewAt(0);
 //            viewgroup.addView(v, 0);
 //        }
-        if (cachedView != null && cachedView.getChildAt(0) != null) {
-            View v = cachedView.getChildAt(0);
-            cachedView.removeViewAt(0);
-            viewgroup.removeViewAt(0);
-            viewgroup.addView(v, 0);
-            cachedView = null;
-        }
+//        if (cachedView != null && cachedView.getChildAt(0) != null) {
+//            View v = cachedView.getChildAt(0);
+//            cachedView.removeViewAt(0);
+//            viewgroup.removeViewAt(0);
+//            viewgroup.addView(v, 0);
+//            cachedView = null;
+//        }
 
         container.addView(viewgroup, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));

@@ -1,9 +1,14 @@
-package com.mfashiongallery.emag.preview;
+package android.support.v4.view;
 
 import android.content.Context;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
+import com.mfashiongallery.emag.preview.LockWallpaperPreviewView;
+
+/**
+ * Created by liuchonghui on 16/6/3.
+ */
 public class CustomViewPager extends ViewPager {
 
     private float mInitialTouchY, mInitialTouchX;
@@ -93,6 +98,7 @@ public class CustomViewPager extends ViewPager {
         ItemInfo info = super.infoForPosition(position);
         info.scrolling = false;
         if (clipPopulate) {
+            clipPopulate = false;
             ItemInfo ii = null;
             int startPos = position + 1;
             int endPos = position + getOffscreenPageLimit();
@@ -114,11 +120,16 @@ public class CustomViewPager extends ViewPager {
         return info;
     }
 
-    @Override
-    public void setCurrentItem(int item, boolean smoothScroll) {
+//    @Override
+//    public void setCurrentItem(int item, boolean smoothScroll) {
+//        clipPopulate = true;
+//        super.setCurrentItem(item, smoothScroll);
+//        clipPopulate = false;
+//    }
+
+    public void resetCurrentItem(int newItem) {
         clipPopulate = true;
-        super.setCurrentItem(item, smoothScroll);
-        clipPopulate = false;
+        setCurrentItem(newItem, false);
     }
 
     boolean clipPopulate;

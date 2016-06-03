@@ -15,8 +15,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +25,9 @@ import com.mfashiongallery.emag.preview.model.CubicEaseInOutInterpolator;
 import com.mfashiongallery.emag.preview.model.CubicEaseOutInterpolator;
 import com.mfashiongallery.emag.preview.model.RecordType;
 import com.mfashiongallery.emag.preview.model.WallpaperInfo;
+
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.CustomViewPager;
 
 import tool.whosdomainname.android.R;
 
@@ -90,7 +91,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
         mAdapter = adapter;
         mAdapter.setViewPager(this);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setPageTransformer(true, new PageTransformer() {
+        mViewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
             @Override
             public void transformPage(View view, float position) {
                 int pageWidth = view.getWidth();
@@ -463,7 +464,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
             // 使用remove＋notify的方式去处理数据，但是处理之后，curItem的位置发生改变，
             // 需要手动计算期望的位置，所以有setCurrentItem调用，带来的问题就是重复刷新的问题
             // 后来用缓存View的方式解决
-            mViewPager.setCurrentItem(positionInViewPager - loop, false);
+            mViewPager.resetCurrentItem(positionInViewPager - loop);
             nextInfo = mAdapter.removeWallpapaerItem(positionInList, positionInViewPager);
             mAdapter.notifyAdapterDataChanged();
         }
