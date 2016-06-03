@@ -336,7 +336,8 @@ public class LockWallpaperPreviewView extends FrameLayout {
         }
         int positionInViewPager = mViewPager.getCurrentItem();
         int positionInList = positionInViewPager % mAdapter.getSize();
-		startFadeTurnPageAnim(positionInList, positionInViewPager, null);
+        mAdapter.cacheTargetView(positionInList);
+        startFadeTurnPageAnim(positionInList, positionInViewPager, null);
         fakeScrollOnePage(positionInList, positionInViewPager, new PositionRunnable() {
             @Override
             public void run(int positionInList, int positionInViewPager) {

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -234,12 +235,15 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
 //            viewgroup.removeViewAt(0);
 //            viewgroup.addView(v, 0);
 //        }
-        if (cachedView != null && cachedView.getChildAt(0) != null) {
-            View v = cachedView.getChildAt(0);
-            cachedView.removeViewAt(0);
-            viewgroup.removeViewAt(0);
-            viewgroup.addView(v, 0);
-            cachedView = null;
+        if (useCache) {
+            if (cachedView != null && cachedView.getChildAt(0) != null) {
+                View v = cachedView.getChildAt(0);
+                cachedView.removeViewAt(0);
+                viewgroup.removeViewAt(0);
+                viewgroup.addView(v, 0);
+                cachedView = null;
+                useCache = false;
+            }
         }
 
         container.addView(viewgroup, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -258,9 +262,9 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
 //        }
         View view = (View) object;
         container.removeView(view);
-        if (view.getTag() == cachedInfo) {
-            cachedView = (ViewGroup) view;
-        }
+//        if (view.getTag() == cachedInfo) {
+//            cachedView = (ViewGroup) view;
+//        }
         view.setTag(null);
         object = null;
     }
@@ -308,6 +312,27 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
     WallpaperInfo cachedInfo;
     ViewGroup cachedView;
 
+    public void cacheTargetView(int positionInList) {
+        WallpaperItem item = mWallpaperItems.get(positionInList);
+        if (item != null) {
+            int nextIndex = positionInList + 1;
+            if (nextIndex >= getSize()) {
+                nextIndex = 0;
+            }
+            WallpaperInfo nextInfo = mWallpaperItems.get(nextIndex).mInfo;
+            int count = mMainView.getViewPagerChildCount();
+            for (int i = 0; i < count; i++) {
+                View child = mMainView.getViewPager().getChildAt(i);
+                if (child.getTag() == nextInfo) {
+                    cachedView = (ViewGroup) child;
+                    break;
+                }
+            }
+        }
+    }
+
+    boolean useCache;
+
     public WallpaperInfo removeWallpapaerItem(int positionInList, int positionInViewPager) {
         WallpaperItem item = mWallpaperItems.get(positionInList);
         if (item != null) {
@@ -318,6 +343,7 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
             cachedInfo = mWallpaperItems.get(nextIndex).mInfo;
             mWallpaperItems.remove(item);
         }
+        useCache = true;
         return cachedInfo;
     }
 
