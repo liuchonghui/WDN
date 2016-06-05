@@ -1,2 +1,2 @@
 # WhosDomainName
-		remotes/origin/master --- for WhosDomainName application
+		remotes/origin/githubsdk --- Use GithubAndroidSdk for fun.
