@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="tool.whosdomainname.android"
     android:versionCode="15"
     android:versionName="5.0">
@@ -28,7 +29,8 @@
 
     <uses-sdk
         android:minSdkVersion="9"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="19"
+        tools:overrideLibrary="com.alorma.github.sdk" />
 
     <application
         android:name="tool.whosdomainname.android.MainApplication"

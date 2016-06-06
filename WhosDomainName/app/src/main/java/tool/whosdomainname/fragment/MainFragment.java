@@ -8,6 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alorma.github.sdk.services.gists.PublicGistsClient;
+import com.alorma.github.sdk.services.repos.GithubReposClient;
+import com.alorma.github.sdk.services.repos.UserReposClient;
+import com.alorma.gitskarios.core.client.LogProvider;
+import com.alorma.gitskarios.core.client.LogProviderInterface;
+import com.alorma.gitskarios.core.client.TokenProvider;
+import com.alorma.gitskarios.core.client.TokenProviderInterface;
+import com.alorma.gitskarios.core.client.UrlProvider;
+import com.alorma.gitskarios.core.client.UrlProviderInterface;
+import com.alorma.gitskarios.core.client.UsernameProvider;
+import com.alorma.gitskarios.core.client.UsernameProviderInterface;
+
+import rx.schedulers.Schedulers;
 import tool.whosdomainname.activity.CustomWaitDialog;
 import tool.whosdomainname.android.R;
 
@@ -63,6 +76,40 @@ public class MainFragment extends BaseFragment {
         mUpdateDialog = new CustomWaitDialog(getActivity());
         mUpdateDialog.setCanceledOnTouchOutside(false);
 
+        TokenProvider.setTokenProviderInstance(new TokenProviderInterface() {
+            @Override
+            public String getToken() {
+                return null;
+            }
+        });
+
+        UrlProvider.setUrlProviderInstance(new UrlProviderInterface() {
+            @Override
+            public String getUrl() {
+                return null;
+            }
+        });
+
+        UsernameProvider.setUsernameProviderInterface(new UsernameProviderInterface() {
+            @Override
+            public String getUsername() {
+                return null;
+            }
+        });
+
+        LogProvider.setTokenProviderInstance(new LogProviderInterface() {
+            @Override
+            public void log(String message) {
+            }
+        });
+
+        PublicGistsClient client = new PublicGistsClient();
+
+//        GithubReposClient client = new UserReposClient(getActivity(), username);
+//        client.observable()
+//                .observeOn(AndroidSchedulers.mainThread()
+//                        .subscribeOn(Schedulers.io())
+//                        .subscribe(null);
     }
 
     protected void flushPage() {
