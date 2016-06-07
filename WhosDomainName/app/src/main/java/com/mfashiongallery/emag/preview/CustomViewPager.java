@@ -91,8 +91,10 @@ public class CustomViewPager extends ViewPager {
     @Override
     ItemInfo infoForPosition(int position) {
         ItemInfo info = super.infoForPosition(position);
-        info.scrolling = false;
         if (clipPopulate) {
+            if (info != null) {
+                info.scrolling = false;
+            }
             ItemInfo ii = null;
             int startPos = position + 1;
             int endPos = position + getOffscreenPageLimit();

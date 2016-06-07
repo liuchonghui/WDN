@@ -372,7 +372,8 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
 
     public void updateView() {
         updateLikeView();
-        setDislikeViewEnable(mMainView.getAdapterVisibleChildCount() > 1);
+//        setDislikeViewEnable(mMainView.getAdapterVisibleChildCount() > 1);
+        updateDislikeView();
     }
 
     private void updateLikeView() {
@@ -390,6 +391,21 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
         mActions[LIKE].setEnabled(info.supportLike);
     }
 
+    private void updateDislikeView() {
+        final ImageView image = (ImageView) mActions[DISLIKE].findViewById(R.id.menu_item_image);
+        final TextView text = (TextView) mActions[DISLIKE].findViewById(R.id.menu_item_text);
+        WallpaperInfo info = mMainView.getAdapter().getWallpaperInfo(mMainView.getCurrentItem());
+        boolean enable = info.supportDislike;
+        image.setEnabled(enable);
+        text.setTextColor(enable ? colorEnable : colorDisable);
+        mActions[DISLIKE].setEnabled(enable);
+    }
+
+    /**
+     * Use updateDislikeView for instead.
+     * @param enable
+     */
+    @Deprecated
     private void setDislikeViewEnable(boolean enable) {
         final ImageView image = (ImageView) mActions[DISLIKE].findViewById(R.id.menu_item_image);
         final TextView text = (TextView) mActions[DISLIKE].findViewById(R.id.menu_item_text);

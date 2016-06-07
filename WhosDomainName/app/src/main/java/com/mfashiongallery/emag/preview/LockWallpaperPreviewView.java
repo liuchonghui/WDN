@@ -285,7 +285,8 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     public int getCurrentItem() {
-        return mViewPager.getCurrentItem() % mAdapter.getSize();
+//        return mViewPager.getCurrentItem() % mAdapter.getSize();
+        return mAdapter.getPositionInList(mViewPager.getCurrentItem());
     }
 
     public LockWallpaperPreviewAdapter getAdapter() {
@@ -342,7 +343,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
             @Override
             public void run(int positionInList, int positionInViewPager) {
                 WallpaperInfo nextInfo = removeItemByPosition(positionInList, positionInViewPager);
-                if (0 == positionInList) {
+                if (mAdapter.isFirst(positionInList)) {
                     // 用户删除了第0个，即当前锁屏图，那么应用下一张作为锁屏图并通知用户已替换
                     mActionMenus.applyWallpaper(nextInfo);
                 }
@@ -497,7 +498,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
             @Override
             public void run(int positionInList, int positionInViewPager) {
                 WallpaperInfo nextInfo = removeItemByPosition(positionInList, positionInViewPager);
-                if (0 == positionInList) {
+                if (mAdapter.isFirst(positionInList)) {
                     // 用户删除了第0个，即当前锁屏图，那么应用下一张作为锁屏图并通知用户已替换
                     mActionMenus.applyWallpaper(nextInfo);
                 }
