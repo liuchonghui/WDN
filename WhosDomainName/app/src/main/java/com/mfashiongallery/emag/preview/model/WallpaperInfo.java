@@ -16,6 +16,7 @@ public class WallpaperInfo {
     public String packageName;
     public String landingPageUrl;
     public boolean supportLike;
+    public boolean supportDislike;
     public boolean like;
     public String tag;
     public String cp;

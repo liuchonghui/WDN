@@ -48,7 +48,6 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
     protected Handler mHandler = new H();
     protected final static int MSG_RECORD_EVENT = 100;
 
-
     protected class H extends Handler {
         public void handleMessage(Message m) {
             switch (m.what) {
@@ -96,7 +95,7 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
         }
 //        WallpaperInfo info = mWallpaperItems.get(position).mInfo;
         WallpaperInfo info = null;
-        if (mWallpaperItems.size() > position) {
+        if (mWallpaperItems.size() > position && position >= 0) {
             info = mWallpaperItems.get(position).mInfo;
         }
         if (info == null) {
@@ -138,10 +137,10 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
         return mWallpaperItems.get(position).mInfo;
     }
 
-    public View getView(int position) {
+    public View getView(int positionInList) {
 //        return mWallpaperItems.get(position).mView;
         View view = null;
-        WallpaperInfo info = mWallpaperItems.get(position).mInfo;
+        WallpaperInfo info = mWallpaperItems.get(positionInList).mInfo;
         int count = mMainView.getViewPagerChildCount();
         for (int i = 0; i < count; i++) {
             View child = mMainView.getViewPager().getChildAt(i);
@@ -178,10 +177,14 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
         return position % getSize();
     }
 
+    protected WallpaperItem getPosItem(int pos) {
+        return mWallpaperItems.get(pos);
+    }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         final int pos = getPositionInList(position);
-        final WallpaperItem item = mWallpaperItems.get(pos);
+        final WallpaperItem item = getPosItem(pos);
         final WallpaperInfo info = item.mInfo;
 
 //        ViewGroup view = null;
@@ -389,5 +392,9 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
     public void notifyAdapterDataChanged() {
         mMainView.updateActionMenuView();
         notifyDataSetChanged();
+    }
+
+    public boolean isFirst(int positionInList) {
+        return 0 == positionInList;
     }
 }
