@@ -38,15 +38,15 @@ import tool.whosdomainname.android.R;
 
 @SuppressLint("NewApi")
 public class LockWallpaperPreviewAdapter extends PagerAdapter {
-    private final static String LOG_TAG = "LockWallpaperPreviewAdapter";
-    private final static boolean DEBUG = LockWallpaperPreviewActivity.DEBUG;
-    private Context mContext;
-    private LayoutInflater mInflater;
-    private List<WallpaperItem> mWallpaperItems;
-    private int mMaxPixels;
-    private LockWallpaperPreviewView mMainView;
-    private Handler mHandler = new H();
-    private final static int MSG_RECORD_EVENT = 100;
+    protected final static String LOG_TAG = "LockWallpaperPreviewAdapter";
+    protected final static boolean DEBUG = LockWallpaperPreviewActivity.DEBUG;
+    protected Context mContext;
+    protected LayoutInflater mInflater;
+    protected List<WallpaperItem> mWallpaperItems;
+    protected int mMaxPixels;
+    protected LockWallpaperPreviewView mMainView;
+    protected Handler mHandler = new H();
+    protected final static int MSG_RECORD_EVENT = 100;
 
 
     protected class H extends Handler {
@@ -174,9 +174,13 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
         return view == object;
     }
 
+    public int getPositionInList(int position) {
+        return position % getSize();
+    }
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        final int pos = position % getSize();
+        final int pos = getPositionInList(position);
         final WallpaperItem item = mWallpaperItems.get(pos);
         final WallpaperInfo info = item.mInfo;
 
@@ -345,6 +349,11 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
         }
         useCache = true;
         return cachedInfo;
+    }
+
+    public int countLoop(int positionInViewPager) {
+        int loop = positionInViewPager / getSize();
+        return loop;
     }
 
     @Override

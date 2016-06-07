@@ -335,7 +335,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
             return;
         }
         int positionInViewPager = mViewPager.getCurrentItem();
-        int positionInList = positionInViewPager % mAdapter.getSize();
+        int positionInList = mAdapter.getPositionInList(positionInViewPager);
         mAdapter.cacheTargetView(positionInList);
         startFadeTurnPageAnim(positionInList, positionInViewPager, null);
         fakeScrollOnePage(positionInList, positionInViewPager, new PositionRunnable() {
@@ -458,8 +458,9 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     private WallpaperInfo removeItemByPosition(int positionInList, int positionInViewPager) {
-        int size = mAdapter.getSize();
-        final int loop = positionInViewPager / size;
+//        int size = mAdapter.getSize();
+//        final int loop = positionInViewPager / size;
+        final int loop = mAdapter.countLoop(positionInViewPager);
         WallpaperInfo nextInfo = null;
         {   // 解决方案1:
             // 使用remove＋notify的方式去处理数据，但是处理之后，curItem的位置发生改变，
@@ -491,7 +492,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
             return;
         }
         int positionInViewPager = mViewPager.getCurrentItem();
-        int positionInList = positionInViewPager % mAdapter.getSize();
+        int positionInList = mAdapter.getPositionInList(positionInViewPager);
         fakeScrollOnePage(positionInList, positionInViewPager, new PositionRunnable() {
             @Override
             public void run(int positionInList, int positionInViewPager) {
