@@ -2,6 +2,7 @@ package android.support.v4.view;
 
 import android.content.Context;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.mfashiongallery.emag.preview.LockWallpaperPreviewView;
@@ -149,4 +150,12 @@ public class CustomViewPager extends ViewPager {
 //        info.scrolling = false;
 //        return info;
 //    }
+
+    public View getCurrentView() {
+        ItemInfo info = super.infoForPosition(getCurrentItem());
+        if (info != null && info.object instanceof View) {
+            return (View) info.object;
+        }
+        return null;
+    }
 }

@@ -109,6 +109,7 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
 
         mMainView = (LockWallpaperPreviewView) findViewById(R.id.view_pager);
         LockWallpaperPreviewAdapter adapter = new LockWallpaperPreviewAdapter(getApplicationContext(), mWallpaperInfos);
+//        LockWallpaperPreviewAdapter adapter = new LockWallpaperPreviewOneLeftAdapter(getApplicationContext(), mWallpaperInfos);
         mMainView.setAdapter(adapter);
         mMainView.postDelayed(new Runnable() {
             @Override

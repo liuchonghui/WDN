@@ -353,7 +353,10 @@ public class LockWallpaperPreviewView extends FrameLayout {
 
     private void startFadeTurnPageAnim(final int positionInList, final int positionInViewPager,
                                        final PositionRunnable finallyToDo) {
-        View view = mAdapter.getView(positionInList);
+        View view = mViewPager.getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(positionInList);
+        }
         if (view != null) {
             ObjectAnimator alphaAnimOut = ObjectAnimator.ofFloat(view, "alpha", 1f, 0.1f);
             ObjectAnimator scaleXAnimOut = ObjectAnimator.ofFloat(view, "scaleX", 1f, 0.95f);
