@@ -394,8 +394,7 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
     private void updateDislikeView() {
         final ImageView image = (ImageView) mActions[DISLIKE].findViewById(R.id.menu_item_image);
         final TextView text = (TextView) mActions[DISLIKE].findViewById(R.id.menu_item_text);
-        WallpaperInfo info = mMainView.getAdapter().getWallpaperInfo(mMainView.getCurrentItem());
-        boolean enable = info.supportDislike;
+        boolean enable = mMainView.getAdapter().canDislike(mMainView.getCurrentItem());
         image.setEnabled(enable);
         text.setTextColor(enable ? colorEnable : colorDisable);
         mActions[DISLIKE].setEnabled(enable);

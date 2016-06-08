@@ -99,7 +99,6 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
             info = new WallpaperInfo();
             info.key = String.valueOf(i);
             info.supportLike = true;
-            info.supportDislike = true;
             info.title = String.valueOf(i) + "." + PicEnum.getTitle(i);
             info.content = String.valueOf(i) + "." + PicEnum.getContent(i);
             info.wallpaperUri = PicEnum.get(i);

@@ -397,4 +397,8 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
     public boolean isFirst(int positionInList) {
         return 0 == positionInList;
     }
+
+    public boolean canDislike(int positionInList) {
+        return getSize() > 1;
+    }
 }

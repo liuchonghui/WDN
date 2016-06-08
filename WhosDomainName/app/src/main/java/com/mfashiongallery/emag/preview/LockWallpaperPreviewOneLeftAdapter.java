@@ -20,7 +20,6 @@ public class LockWallpaperPreviewOneLeftAdapter extends LockWallpaperPreviewAdap
         if (wallpaperInfos != null) {
             if (wallpaperInfos.size() > 0) {
                 WallpaperInfo firstInfo = wallpaperInfos.get(0);
-                firstInfo.supportDislike = true;
                 firstItem = new WallpaperItem();
                 firstItem.mInfo = firstInfo;
             }
@@ -49,6 +48,9 @@ public class LockWallpaperPreviewOneLeftAdapter extends LockWallpaperPreviewAdap
     protected WallpaperItem firstItem = null;
 
     public int getPositionInList(int position) {
+//        if (getSize() == 0) {
+//            return -1;
+//        }
         int pos = 0;
         if (firstItem == null) {
             pos = position % getSize();
@@ -165,10 +167,19 @@ public class LockWallpaperPreviewOneLeftAdapter extends LockWallpaperPreviewAdap
             info = firstItem.mInfo;
         } else {
             info = mWallpaperItems.get(positionInList).mInfo;
-            if (getSize() <= 1) {
-               info.supportDislike = false;
-            }
         }
         return info;
+    }
+
+    public boolean canDislike(int positionInList) {
+        boolean enable = true;
+        if (getSize() <= 1) {
+            if (firstItem == null) {
+                enable = false;
+            } else if (positionInList >= 0) {
+                enable = false;
+            }
+        }
+        return enable;
     }
 }
