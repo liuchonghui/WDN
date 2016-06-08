@@ -323,7 +323,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     public void startDislikeAnim() {
-        if (!mHasShowHint || mInExit) {
+        if (!mHasShowHint || mInExit || fakeDraggin) {
             // 没开始或者已结束
             return;
         }
@@ -480,7 +480,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     public void declarConfirmFakeScroll() {
-        if (!mHasShowHint || mInExit) {
+        if (!mHasShowHint || mInExit || fakeDraggin) {
             // 没开始或者已结束
             return;
         }
