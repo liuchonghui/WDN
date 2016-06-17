@@ -14,7 +14,7 @@ public enum PicEnum {
     PIC_6("Car", "This is Car", "http://wallpaper.cdn.pandora.xiaomi.com/thumbnail/webp/w720/MiTv/0925c24e16b6d42c8208eff1d70b61a331aa56005"),
     PIC_7("Perfume", "This is Perfume", "http://wallpaper.cdn.pandora.xiaomi.com/thumbnail/webp/w720/MiTv/02121f57ca1b548863c33bba511c19bbfd69cbe4b"),
     PIC_8("Art", "This is Art", "http://wallpaper.cdn.pandora.xiaomi.com/thumbnail/webp/w720/MiTv/06aec5126e269fb4ed9cbcacf4741ef1ef743ab5a"),
-    PIC_9("Gang", "This is Gang", "http://wallpaper.cdn.pandora.xiaomi.com/thumbnail/webp/w720/MiTv/0aa6e5d462f6758a882e32839b1a792f23940520e");
+    PIC_9("Hathaway", "This is Hathaway", "http://wallpaper.cdn.pandora.xiaomi.com/thumbnail/jpeg/w512/MiTv/0d75c5cf7e505bf41b8cc472b24a8bced4e43909b");
 
     PicEnum(String title, String content, String url) {
         this.title = title;
