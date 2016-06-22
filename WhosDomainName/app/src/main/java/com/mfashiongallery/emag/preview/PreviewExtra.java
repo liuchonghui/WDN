@@ -16,6 +16,8 @@ public class PreviewExtra implements Parcelable {
     String shareContent;
     String shareUri;
 
+    String shareComponent;
+
     public String getSharePlatform() {
         return sharePlatform;
     }
@@ -48,6 +50,14 @@ public class PreviewExtra implements Parcelable {
         this.shareUri = shareUri;
     }
 
+    public String getShareComponent() {
+        return shareComponent;
+    }
+
+    public void setShareComponent(String shareComponent) {
+        this.shareComponent = shareComponent;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -58,6 +68,8 @@ public class PreviewExtra implements Parcelable {
         this.shareTitle = in.readString();
         this.shareContent = in.readString();
         this.shareUri = in.readString();
+
+        this.shareComponent = in.readString();
     }
 
     @Override
@@ -66,6 +78,8 @@ public class PreviewExtra implements Parcelable {
         dest.writeString(this.shareTitle);
         dest.writeString(this.shareContent);
         dest.writeString(this.shareUri);
+
+        dest.writeString(this.shareComponent);
     }
 
     public static final Creator<PreviewExtra> CREATOR = new Creator<PreviewExtra>() {

@@ -368,21 +368,21 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
                 break;
             case TAG_MOMENT:
                 if (mShareAvailds[MOMENT]) {
-                    onShare(Platform.WECHAT_MOMENT);
+                    onShare(SharePlatform.WECHAT_MOMENT);
                 } else {
                     Toast.makeText(getContext(), "请安装微信", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case TAG_WECHAT:
                 if (mShareAvailds[WECHAT]) {
-                    onShare(Platform.WECHAT);
+                    onShare(SharePlatform.WECHAT);
                 } else {
                     Toast.makeText(getContext(), "请安装微信", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case TAG_WEIBO:
                 if (mShareAvailds[WEIBO]) {
-                    onShare(Platform.WEIBO);
+                    onShare(SharePlatform.WEIBO);
                 } else {
                     Toast.makeText(getContext(), "请安装微博", Toast.LENGTH_SHORT).show();
                 }
@@ -393,14 +393,14 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
 //                    return;
 //                }
                 if (mShareAvailds[QZONE]) {
-                    onShare(Platform.QZONE);
+                    onShare(SharePlatform.QZONE);
                 } else {
                     Toast.makeText(getContext(), "请安装QZone", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case TAG_QQ:
                 if (mShareAvailds[QQ]) {
-                    onShare(Platform.QQ);
+                    onShare(SharePlatform.QQ);
                 } else {
                     Toast.makeText(getContext(), "请安装QQ", Toast.LENGTH_SHORT).show();
                 }
@@ -501,7 +501,7 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
         QQ,
     }
 
-    private void onShare(Platform platform) {
+    private void onShare(SharePlatform platform) {
         if (platform == null) {
             return;
         }
@@ -552,10 +552,10 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
 
     private class SavePicTask extends AsyncTask<Void, Void, Boolean> {
         private Bitmap mBitmap = null;
-        private Platform platform = null;
+        private SharePlatform platform = null;
         private WallpaperInfo info = null;
 
-        public void setPlatform(Platform platform) {
+        public void setPlatform(SharePlatform platform) {
             this.platform = platform;
         }
 
@@ -627,6 +627,8 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
 //                    } else {
 //                        throw new IllegalStateException("unknown platform type!");
 //                    }
+//                    new ShareAgent().doShare(mContext, platform, info.title, info.content, imageUri);
+
                     getContext().sendBroadcast(new Intent("xiaomi.intent.action.SHOW_SECURE_KEYGUARD"));
                     ((Activity) getContext()).finish();
                 } catch (Exception e) {
