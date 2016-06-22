@@ -61,6 +61,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.mfashiongallery.emag.preview.ShareActivity"
+            android:excludeFromRecents="true"
+            android:label="ShareActivity"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:stateNotNeeded="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay" />
+
         <service android:name="com.android.overlay.KeepAliveService" />
 
         <activity

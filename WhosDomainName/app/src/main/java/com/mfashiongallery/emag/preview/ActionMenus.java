@@ -33,6 +33,7 @@ import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.Toast;
 
+import com.android.overlay.RunningEnvironment;
 import com.google.gson.Gson;
 import com.mfashiongallery.emag.preview.model.RecordType;
 import com.mfashiongallery.emag.preview.model.SineEaseInInterpolator;
@@ -606,19 +607,26 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
 //                    shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                    mContext.startActivity(Intent.createChooser(shareIntent,
 //                            mContext.getString(R.string.share)));
-                    if (Platform.WEIBO == platform) {
-                        onShareWeibo(info, imageUri);
-                    } else if (Platform.WECHAT == platform) {
-                        onShareWeChat(info, imageUri);
-                    } else if (Platform.WECHAT_MOMENT == platform) {
-                        onShareWeChatMoment(info, imageUri);
-                    } else if (Platform.QQ == platform) {
-                        onShareQQ(info, imageUri);
-                    } else if (Platform.QZONE == platform) {
-                        onShareQzone(info, imageUri);
-                    } else {
-                        throw new IllegalStateException("unknown platform type!");
-                    }
+                    PreviewExtra extra = new PreviewExtra();
+                    extra.setSharePlatform(platform.name());
+                    extra.setShareTitle(info.title);
+                    extra.setShareContent(info.content);
+                    extra.setShareUri(imageUri.getEncodedPath());
+                    Intent intent = ShareActivity.createIntent(getContext(), extra);
+                    ((Activity) getContext()).startActivity(intent);
+//                    if (Platform.WEIBO == platform) {
+//                        onShareWeibo(info, imageUri);
+//                    } else if (Platform.WECHAT == platform) {
+//                        onShareWeChat(info, imageUri);
+//                    } else if (Platform.WECHAT_MOMENT == platform) {
+//                        onShareWeChatMoment(info, imageUri);
+//                    } else if (Platform.QQ == platform) {
+//                        onShareQQ(info, imageUri);
+//                    } else if (Platform.QZONE == platform) {
+//                        onShareQzone(info, imageUri);
+//                    } else {
+//                        throw new IllegalStateException("unknown platform type!");
+//                    }
                     getContext().sendBroadcast(new Intent("xiaomi.intent.action.SHOW_SECURE_KEYGUARD"));
                     ((Activity) getContext()).finish();
                 } catch (Exception e) {
@@ -944,7 +952,8 @@ public class ActionMenus extends LinearLayout implements OnClickListener {
                 "com.tencent.mm.ui.tools.ShareImgUI"));
         shareIntent.addCategory(Intent.CATEGORY_DEFAULT);
         shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, sb.toString());
+//        shareIntent.putExtra(Intent.EXTRA_TEXT, sb.toString());
+        shareIntent.putExtra("Kdescription", sb.toString());
         mContext.startActivity(shareIntent);
     }
 
