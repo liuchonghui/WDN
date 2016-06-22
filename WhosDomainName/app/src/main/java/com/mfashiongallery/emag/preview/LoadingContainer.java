@@ -4,15 +4,16 @@ package com.mfashiongallery.emag.preview;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
 import tool.whosdomainname.android.R;
 
-@SuppressLint("NewApi")
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class LoadingContainer extends FrameLayout {
     private static final float LOADING_ITEM_ALPHA_MIN = 0.5f;
     private static final float LOADING_ITEM_ALPHA_MAX = 0.9f;

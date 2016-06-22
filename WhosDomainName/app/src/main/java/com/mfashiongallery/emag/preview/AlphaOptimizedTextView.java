@@ -3,6 +3,7 @@ package com.mfashiongallery.emag.preview;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 public class AlphaOptimizedTextView extends TextView

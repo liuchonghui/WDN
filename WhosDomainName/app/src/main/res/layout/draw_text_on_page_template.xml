@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout android:id="@+id/player_page_container"
+<RelativeLayout android:id="@+id/player_page_container"
              xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:clipChildren="false"
     >
-    <!--<ImageView-->
-        <!--android:id="@+id/player_pager_wallpaper"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:scaleType="centerCrop"-->
-        <!--/>-->
-    <com.android.imageloadercompact.CompactImageView
-        xmlns:compact="http://schemas.android.com/apk/res-auto"
+    <ImageView
         android:id="@+id/player_pager_wallpaper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
-
+        android:scaleType="centerCrop"
+        />
+    <View
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_mask"
+        />
     <LinearLayout
         android:id="@+id/player_pager_click_area"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/player_page_text_area_margin_left"
         android:layout_marginRight="@dimen/player_page_text_area_margin_right"
-        android:layout_marginTop="@dimen/player_page_text_area_margin_top"
+        android:layout_alignParentBottom="true"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
@@ -45,10 +44,67 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/player_page_content_text_margin_top"
+            android:layout_marginBottom="@dimen/player_page_content_text_margin_bottom"
             android:lineSpacingExtra="@dimen/player_page_content_text_line_spacing_extra"
             android:maxWidth="@dimen/player_page_content_text_max_width"
             android:textColor="@color/player_page_content_text_color"
             android:textSize="@dimen/player_page_content_text_size"
             />
+        <View android:id="@+id/player_pager_topline"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/menu_item_top_line_color"
+            android:visibility="invisible"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/menu_item_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/menu_item_top_margin"
+                android:layout_marginBottom="@dimen/menu_item_bottom_margin"
+                android:src="@drawable/settings"
+                android:visibility="invisible"/>
+            <TextView
+                android:id="@+id/player_pager_from"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:textColor="@color/player_page_from_text_color"
+                android:textSize="@dimen/player_page_from_text_size"
+                android:text="@string/from_migallerylockscreen"
+                android:layout_alignTop="@+id/menu_item_image"
+                android:layout_marginTop="-5dp"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
+
     </LinearLayout>
-</FrameLayout>
+    <LinearLayout
+        android:id="@+id/player_pager_cp_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/player_page_text_area_margin_left"
+        android:layout_marginRight="@dimen/cp_text_right_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:alpha="0"
+        >
+        <TextView
+            android:id="@+id/player_pager_cp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="@dimen/player_page_content_text_line_spacing_extra"
+            android:maxWidth="@dimen/player_page_content_text_max_width"
+            android:textColor="@color/player_page_cp_text_color"
+            android:textSize="@dimen/player_page_cp_text_size"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

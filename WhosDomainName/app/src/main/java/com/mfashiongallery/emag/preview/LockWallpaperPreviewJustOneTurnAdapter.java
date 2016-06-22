@@ -10,10 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by liuchonghui on 16/6/6.
+ * 此Adapter对应于这种情景：第一张图只出现一次，从第二张图开始，依次加入循环展示。
+ * 也就是说第一张图永远只在0号位置，其他图都可以循环，当然0号位置也支持删除操作。
+ *
+ * @author liuchonghui
  */
-public class LockWallpaperPreviewOneLeftAdapter extends LockWallpaperPreviewAdapter {
-    public LockWallpaperPreviewOneLeftAdapter(Context context, List<WallpaperInfo> wallpaperInfos) {
+public class LockWallpaperPreviewJustOneTurnAdapter extends LockWallpaperPreviewAdapter {
+
+    protected WallpaperItem firstItem = null;
+
+    public LockWallpaperPreviewJustOneTurnAdapter(Context context,
+                                                  List<WallpaperInfo> wallpaperInfos) {
         super(context, wallpaperInfos);
         firstItem = null;
         mWallpaperItems.clear();
@@ -45,12 +52,7 @@ public class LockWallpaperPreviewOneLeftAdapter extends LockWallpaperPreviewAdap
         }
     }
 
-    protected WallpaperItem firstItem = null;
-
     public int getPositionInList(int position) {
-//        if (getSize() == 0) {
-//            return -1;
-//        }
         int pos = 0;
         if (firstItem == null) {
             pos = position % getSize();

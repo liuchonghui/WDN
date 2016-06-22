@@ -3,6 +3,7 @@ package com.mfashiongallery.emag.preview;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,7 +26,7 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
     public final static boolean DEBUG = Log.isLoggable(LOG_TAG, Log.DEBUG);
     private LockWallpaperPreviewView mMainView;
     List<WallpaperInfo> mWallpaperInfos = new ArrayList<WallpaperInfo>();
-
+    private boolean[] shareAvailds = new boolean[5];
     private Gson mGson;
     long mShowTime;
     boolean mShowingDialog;
@@ -106,10 +107,10 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
         }
         mWallpaperInfos.clear();
         mWallpaperInfos.addAll(tests);
-
+        shareAvailds = scanSharePlatformAvailds();
         mMainView = (LockWallpaperPreviewView) findViewById(R.id.view_pager);
         LockWallpaperPreviewAdapter adapter = new LockWallpaperPreviewAdapter(getApplicationContext(), mWallpaperInfos);
-//        LockWallpaperPreviewAdapter adapter = new LockWallpaperPreviewOneLeftAdapter(getApplicationContext(), mWallpaperInfos);
+//        LockWallpaperPreviewAdapter adapter = new LockWallpaperPreviewJustOneLeftAdapter(getApplicationContext(), mWallpaperInfos);
         mMainView.setAdapter(adapter);
         mMainView.postDelayed(new Runnable() {
             @Override
@@ -129,6 +130,7 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
                         }
                     }
                 }
+                mMainView.setShareAvailds(shareAvailds);
                 mMainView.showHint();
             }
         }, mShowTime - System.currentTimeMillis());
@@ -186,5 +188,34 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
                 }
             }, 50L);
         }
+    }
+
+    protected boolean[] scanSharePlatformAvailds() {
+//        return new boolean[] {false, false, false, false, false};
+        boolean wechatInstalled = false;
+        boolean weiboInstalled = false;
+        boolean qqInstalled = false;
+        boolean qzoneInstalled = false;
+        List<PackageInfo> packages = getPackageManager().getInstalledPackages(0);
+        if (packages != null) {
+            for (PackageInfo pInfo : packages) {
+                if (pInfo == null) {
+                    continue;
+                }
+                if ("com.sina.weibo".equalsIgnoreCase(pInfo.packageName)) {
+                    weiboInstalled = true;
+                }
+                if ("com.tencent.mobileqq".equalsIgnoreCase(pInfo.packageName)) {
+                    qqInstalled = true;
+                }
+                if ("com.tencent.mm".equalsIgnoreCase(pInfo.packageName)) {
+                    wechatInstalled = true;
+                }
+                if ("com.qzone".equalsIgnoreCase(pInfo.packageName)) {
+                    qzoneInstalled = true;
+                }
+            }
+        }
+        return new boolean[] {wechatInstalled, wechatInstalled, weiboInstalled, qzoneInstalled, qqInstalled};
     }
 }

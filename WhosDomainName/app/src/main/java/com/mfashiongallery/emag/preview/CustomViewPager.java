@@ -1,6 +1,7 @@
 package com.mfashiongallery.emag.preview;
 
 import android.content.Context;
+import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 
@@ -9,6 +10,7 @@ public class CustomViewPager extends ViewPager {
     private float mInitialTouchY, mInitialTouchX;
     private ViewConfiguration mViewConfiguration;
     private LockWallpaperPreviewView mMainView;
+    private boolean mTouchSlopEnable = true;
 
     public CustomViewPager(Context context) {
         super(context);
@@ -21,6 +23,9 @@ public class CustomViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!mTouchSlopEnable) {
+            return false;
+        }
         if (isFakeDragging()) {
             return true;
         }
@@ -29,6 +34,10 @@ public class CustomViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        if (!mTouchSlopEnable) {
+            mMainView.toggleMenus();
+            return false;
+        }
         if (isFakeDragging()) {
             return true;
         }
@@ -88,54 +97,7 @@ public class CustomViewPager extends ViewPager {
         return mState;
     }
 
-    @Override
-    ItemInfo infoForPosition(int position) {
-        ItemInfo info = super.infoForPosition(position);
-        if (clipPopulate) {
-            if (info != null) {
-                info.scrolling = false;
-            }
-            ItemInfo ii = null;
-            int startPos = position + 1;
-            int endPos = position + getOffscreenPageLimit();
-            for (int i = startPos; i <= endPos; i++) {
-                ii = super.infoForPosition(i);
-                if (ii != null && ii.scrolling) {
-                    ii.scrolling = false;
-                }
-            }
-            startPos = position - 1;
-            endPos = position - getOffscreenPageLimit();
-            for (int i = startPos; i >= endPos; i--) {
-                ii = super.infoForPosition(i);
-                if (ii != null && ii.scrolling) {
-                    ii.scrolling = false;
-                }
-            }
-        }
-        return info;
+    public void setTouchSlopEnable(boolean enable) {
+        mTouchSlopEnable = enable;
     }
-
-    @Override
-    public void setCurrentItem(int item, boolean smoothScroll) {
-        clipPopulate = true;
-        super.setCurrentItem(item, smoothScroll);
-        clipPopulate = false;
-    }
-
-    boolean clipPopulate;
-
-//    @Override
-//    void populate(int newCurrentItem) {
-////        clipPopulate = true;
-//        super.populate(newCurrentItem);
-////        clipPopulate = false;
-//    }
-
-//    @Override
-//    ItemInfo addNewItem(int position, int index) {
-//        ItemInfo info = super.addNewItem(position, index);
-//        info.scrolling = false;
-//        return info;
-//    }
 }

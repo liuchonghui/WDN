@@ -4,10 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name = "menu_item_text_color">#B2FFFFFF</color>
-    <color name="menu_item_text_color_enable">#B2FFFFFF</color>
-    <color name="menu_item_text_color_disable">#50ffffff</color>
-
     <!-- 100% black -->
     <color name="primary_text_color">#000000</color>
     <!-- 70% black -->
@@ -29,4 +25,16 @@
 
     <!-- white -->
     <color name="white">#ffffff</color>
+
+    <!-- Player Page -->
+    <color name="player_page_title_text_color">#FFFFFFFF</color><!-- alpha:100% -->
+    <color name="player_page_content_text_color">#D8FFFFFF</color><!-- alpha:90% -->
+    <color name="player_page_cp_text_color">#59FFFFFF</color><!-- alpha:35% -->
+    <color name="player_page_from_text_color">#80FFFFFF</color><!-- alpha:50% -->
+
+    <!-- Preview Activity -->
+    <color name = "menu_item_text_color">#B2FFFFFF</color>
+    <color name="menu_item_text_color_enable">#B2FFFFFF</color>
+    <color name="menu_item_text_color_disable">#50ffffff</color>
+    <color name="menu_item_top_line_color">#66ffffff</color><!-- alpha:40% -->
 </resources>

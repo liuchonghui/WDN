@@ -4,8 +4,10 @@
     <string name="settings">设置</string>
     <string name="liked">已收藏</string>
     <string name="like">收藏</string>
-    <string name="delete">删除</string>
+    <string name="dislike">删除</string>
     <string name="share">分享</string>
     <string name="apply">应用</string>
     <string name="lockscreen_wallpaper_changed">锁屏图已更换</string>
+    <string name="from_migallerylockscreen">来自小米锁屏画报</string>
+
 </resources>

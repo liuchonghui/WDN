@@ -3,20 +3,22 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="recommend_loading_item_padding">23dp</dimen>
-    <dimen name="loading_item_padding">17.3dp</dimen>
-    <dimen name = "page_title_text_size">35dp</dimen>
-    <dimen name = "page_content_text_size">12dp</dimen>
-
+    <!-- Player Page -->
     <dimen name="player_page_text_area_margin_top">20dp</dimen>
     <dimen name="player_page_text_area_margin_left">26dp</dimen>
     <dimen name="player_page_text_area_margin_right">26dp</dimen>
     <dimen name="player_page_content_text_margin_top">5dp</dimen>
+    <dimen name="player_page_content_text_margin_bottom">15dp</dimen>
     <dimen name="player_page_content_text_max_width">270dp</dimen>
     <dimen name="player_page_content_text_line_spacing_extra">2dp</dimen>
 
-    <dimen name="player_page_title_text_size">35dp</dimen>
-    <dimen name="player_page_content_text_size">12dp</dimen>
-    <color name="player_page_title_text_color">#FFFFFFFF</color>
-    <color name="player_page_content_text_color">#D8FFFFFF</color>
+    <!-- Preview Activity -->
+    <dimen name="recommend_loading_item_padding">23dp</dimen>
+    <dimen name="loading_item_padding">17.3dp</dimen>
+    <dimen name = "page_title_text_size">35dp</dimen>
+    <dimen name = "page_content_text_size">12dp</dimen>
+    <dimen name="page_menu_item_area_margin">5dp</dimen>
+    <dimen name="menu_item_top_margin">17dp</dimen>
+    <dimen name="menu_item_bottom_margin">17dp</dimen>
+    <dimen name="cp_text_right_margin">11dp</dimen>
 </resources>

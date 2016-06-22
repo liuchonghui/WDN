@@ -1,12 +1,14 @@
 
 package com.mfashiongallery.emag.preview;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,10 +25,10 @@ import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.imageloadercompact.CompactImageView;
-import com.android.imageloadercompact.ImageLoaderCompact;
 import com.mfashiongallery.emag.preview.model.RecordType;
 import com.mfashiongallery.emag.preview.model.WallpaperInfo;
+import com.mfashiongallery.emag.utils.MiFGUtils;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONObject;
 
@@ -36,7 +38,7 @@ import java.util.List;
 
 import tool.whosdomainname.android.R;
 
-@SuppressLint("NewApi")
+
 public class LockWallpaperPreviewAdapter extends PagerAdapter {
     protected final static String LOG_TAG = "LockWallpaperPreviewAdapter";
     protected final static boolean DEBUG = LockWallpaperPreviewActivity.DEBUG;
@@ -47,16 +49,7 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
     protected LockWallpaperPreviewView mMainView;
     protected Handler mHandler = new H();
     protected final static int MSG_RECORD_EVENT = 100;
-
-    protected class H extends Handler {
-        public void handleMessage(Message m) {
-            switch (m.what) {
-                case MSG_RECORD_EVENT:
-                    handleRecordEvent(m.arg1, m.arg2);
-                    break;
-            }
-        }
-    }
+    protected boolean firstShown = true;
 
     public LockWallpaperPreviewAdapter(Context context, List<WallpaperInfo> wallpaperInfos) {
         mContext = context;
@@ -71,70 +64,65 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
         mMaxPixels = dm.widthPixels * dm.heightPixels;
     }
 
-    public void recordEvent(int position, int event) {
-        mHandler.sendMessage(mHandler.obtainMessage(MSG_RECORD_EVENT, position, event));
-    }
-
-    public void recordEvent(WallpaperInfo info, int event) {
-        int position = -1;
-        for (int i = 0; i < mWallpaperItems.size(); i++) {
-            WallpaperItem item = mWallpaperItems.get(i);
-            if (item != null && item.mInfo == info) {
-                position = i;
-                break;
-            }
-        }
-        if (position >= 0) {
-            mHandler.sendMessage(mHandler.obtainMessage(MSG_RECORD_EVENT, position, event));
+    class EventObj {
+        int event;
+        String identify;
+        String authority;
+        EventObj(int event, String identify, String authority) {
+            this.event = event;
+            this.identify = identify;
+            this.authority = authority;
         }
     }
 
-    public void handleRecordEvent(int position, int event) {
-        if (DEBUG) {
-            Log.d(LOG_TAG, "handleRecordEvent position:" + position + " event:" + event);
-        }
-//        WallpaperInfo info = mWallpaperItems.get(position).mInfo;
-        WallpaperInfo info = null;
-        if (mWallpaperItems.size() > position && position >= 0) {
-            info = mWallpaperItems.get(position).mInfo;
-        }
-        if (info == null) {
+    public void recordEvent(int event, WallpaperInfo info) {
+        if (info == null || info.key == null || info.authority == null) {
             return;
         }
+        Message m = new Message();
+        m.what = MSG_RECORD_EVENT;
+        m.obj = new EventObj(event, info.key, info.authority);
+        mHandler.sendMessage(m);
+    }
 
-        String providerInCharge = info.authority;
-        if (TextUtils.isEmpty(providerInCharge) ) {
+    class H extends Handler {
+        public void handleMessage(Message m) {
+            if (MSG_RECORD_EVENT == m.what) {
+                if (m.obj instanceof EventObj) {
+                    EventObj obj = (EventObj) m.obj;
+                    handleRecordEvent(obj.event, obj.identify, obj.authority);
+                }
+            }
+        }
+    }
+
+    public void handleRecordEvent(int event, String identify, String authority) {
+        if (DEBUG) {
+            Log.d("ACME", "handleRecordEvent " + identify + ", " + event);
+        }
+        if (TextUtils.isEmpty(identify) || TextUtils.isEmpty(authority)) {
             return;
         }
 
         try {
             JSONObject jo = new JSONObject();
-            jo.put("key", info.key);
+            jo.put("key", identify);
             jo.put("event", event);
             String requestJson = jo.toString();
-            handleRecordEvent(providerInCharge, requestJson);
+
+//            Bundle extras = new Bundle();
+//            extras.putString(MiFGConstants.METHOD_REQUEST_JSON, requestJson);
+//            Uri uri = Uri.parse("content://" + authority);
+//            mContext.getContentResolver().call(uri,
+//                    MiFGConstants.METHOD_RECORD_EVENT, null, extras);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void handleRecordEvent(String authority, String requestJson) {
-        if (DEBUG) {
-            Log.d(LOG_TAG, "handleRecordEvent requestJson:" + requestJson);
-        }
-//        try {
-//            Bundle extras = new Bundle();
-//            extras.putString(MiFGConstants.METHOD_REQUEST_JSON, requestJson);
-//            Uri uri = Uri.parse("content://" + authority);
-//            mContext.getContentResolver().call(uri, MiFGConstants.METHOD_RECORD_EVENT, null, extras);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    public WallpaperInfo getWallpaperInfo(int position) {
-        return mWallpaperItems.get(position).mInfo;
+    public WallpaperInfo getWallpaperInfo(int positionInList) {
+        return mWallpaperItems.get(positionInList).mInfo;
     }
 
     public View getView(int positionInList) {
@@ -183,10 +171,14 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+//        final int pos = position % getSize();
+//        final WallpaperItem item = mWallpaperItems.get(pos);
         final int pos = getPositionInList(position);
         final WallpaperItem item = getPosItem(pos);
         final WallpaperInfo info = item.mInfo;
-
+        if (DEBUG) {
+            Log.d("ACME", "new(" + position + ", " + pos + ") " + info.key);
+        }
 //        ViewGroup view = null;
         ViewGroup viewgroup = null;
 //        if (item.mView != null) {
@@ -196,6 +188,7 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
             viewgroup = (ViewGroup) mInflater.inflate(R.layout.draw_text_on_page_template, null);
             TextView title = (TextView) viewgroup.findViewById(R.id.player_pager_title);
             TextView content = (TextView) viewgroup.findViewById(R.id.player_pager_content);
+            TextView cp = (TextView) viewgroup.findViewById(R.id.player_pager_cp);
             View clickArea = viewgroup.findViewById(R.id.player_pager_click_area);
             clickArea.setOnClickListener(new OnClickListener() {
 
@@ -205,7 +198,7 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
                     if (intent != null) {
                         try {
                             mContext.startActivity(intent);
-                            recordEvent(pos, RecordType.EVENT_CLICK);
+                            recordEvent(RecordType.EVENT_CLICK, info);
                             mContext.sendBroadcast(new Intent("xiaomi.intent.action.SHOW_SECURE_KEYGUARD"));
                             ((Activity) mMainView.getContext()).finish();
                         } catch (Exception e) {
@@ -217,22 +210,31 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
 
             Float v = pagewidth.get(pos);
             if (v == null || v.floatValue() != 0f) {
-                CompactImageView image = (CompactImageView) viewgroup.findViewById(R.id.player_pager_wallpaper);
-                if (pos == 0) {
+                ImageView image = (ImageView) viewgroup.findViewById(R.id.player_pager_wallpaper);
+                if (position == 0 && firstShown) {
 //            File first_pic = ThemeResources.getSystem().getLockscreenWallpaper();
 //            Picasso.with(mContext).load(first_pic).into(image);
+                    firstShown = false;
 //                    image.setImageDrawable(ThemeResources.getLockWallpaperCache(mContext));
-                    ImageLoaderCompact.getInstance().displayImage(mContext, info.wallpaperUri, image);
+                    Uri uri = Uri.parse(info.wallpaperUri);
+                    Picasso.with(mContext).load(uri).into(image);
                 } else {
-                    if (info != null) {
-//                        Uri uri = Uri.parse(info.wallpaperUri);
-//                        Picasso.with(mContext).load(uri).into(image);
-                        ImageLoaderCompact.getInstance().displayImage(mContext, info.wallpaperUri, image);
+                    if (info != null && info.wallpaperUri != null) {
+                        Uri uri = Uri.parse(info.wallpaperUri);
+                        Picasso.with(mContext).load(uri).into(image);
+                    } else {
+//                        image.setImageDrawable(ThemeResources.getLockWallpaperCache(mContext));
                     }
 //            loadBitmap(pos, image);
                 }
                 title.setText(info.title);
-                content.setText(info.content + "." + position);
+                content.setText(info.content);
+                if (info.cp != null) {
+                    cp.setText("©" + info.cp);
+                }
+                title.setTextColor(MiFGUtils.parseColor(info.titleColor, -1)); // white + alpha 100%
+                content.setTextColor(MiFGUtils.parseColor(info.contentColor, -654311425)); // white + alpha 90%
+                cp.setTextColor(MiFGUtils.parseColor(info.contentColor, 1509949439)); // white + alpha 35%
             }
         }
 
@@ -268,6 +270,9 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
 //            item.mView = null;
 //        }
         View view = (View) object;
+        if (DEBUG) {
+            Log.d("ACME", "des(" + position + ") " + ((WallpaperInfo) view.getTag()).key);
+        }
         container.removeView(view);
 //        if (view.getTag() == cachedInfo) {
 //            cachedView = (ViewGroup) view;
@@ -280,27 +285,44 @@ public class LockWallpaperPreviewAdapter extends PagerAdapter {
         return false;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void transformPage(View view, float position) {
         int pageWidth = view.getWidth();
         View clickArea = view.findViewById(R.id.player_pager_click_area);
         View title = view.findViewById(R.id.player_pager_title);
         View content = view.findViewById(R.id.player_pager_content);
+        View cpArea = view.findViewById(R.id.player_pager_cp_area);
+        View cp = view.findViewById(R.id.player_pager_cp);
         if (position < -1) { // [-Infinity,-1)
             title.setTranslationX(0);
-            title.setAlpha(0);
             content.setTranslationX(0);
+            cp.setTranslationX(0);
+            title.setAlpha(0);
             content.setAlpha(0);
+            cp.setAlpha(0);
+
         } else if (position <= 1) { // [-1,1]
-            clickArea.setAlpha(1);
             title.setTranslationX(pageWidth * position * 0.2f);
-            title.setAlpha(getTitleFactor(1 - Math.abs(position)));
             content.setTranslationX(pageWidth * position * 0.1f);
+            cp.setTranslationX(pageWidth * position * 0.1f);
+            if (mMainView.isMenuShowing()) {
+                clickArea.setAlpha(1);
+                cpArea.setAlpha(0);
+            } else {
+                clickArea.setAlpha(0);
+                cpArea.setAlpha(1);
+            }
+            title.setAlpha(getTitleFactor(1 - Math.abs(position)));
             content.setAlpha(getContentFactor(1 - Math.abs(position)));
+            cp.setAlpha(getContentFactor(1 - Math.abs(position)));
+
         } else { // (1,+Infinity]
             title.setTranslationX(0);
-            title.setAlpha(0);
             content.setTranslationX(0);
+            cp.setTranslationX(0);
+            title.setAlpha(0);
             content.setAlpha(0);
+            cp.setAlpha(0);
         }
     }
 

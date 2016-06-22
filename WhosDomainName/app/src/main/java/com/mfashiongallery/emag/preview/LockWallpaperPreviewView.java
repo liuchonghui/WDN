@@ -7,14 +7,13 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.PageTransformer;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -26,19 +25,18 @@ import com.mfashiongallery.emag.preview.model.CubicEaseOutInterpolator;
 import com.mfashiongallery.emag.preview.model.RecordType;
 import com.mfashiongallery.emag.preview.model.WallpaperInfo;
 
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.CustomViewPager;
 
 import tool.whosdomainname.android.R;
 
-@SuppressLint("NewApi")
+
 public class LockWallpaperPreviewView extends FrameLayout {
     private CustomViewPager mViewPager;
     private LockWallpaperPreviewAdapter mAdapter;
 
     private LoadingContainer mLoadingView;
     private ActionMenus mActionMenus;
-    private View mMask;
+//    private View mMask;
 
     private boolean mHasShowHint;
 
@@ -67,13 +65,13 @@ public class LockWallpaperPreviewView extends FrameLayout {
         mViewPager = new CustomViewPager(mContext);
         mViewPager.setOffscreenPageLimit(2);
         mViewPager.setMainView(this);
-        addView(mViewPager, 0);
+        addView(mViewPager, 0); // 0 is under the mask for 1 is above the mask
 
         mActionMenus = (ActionMenus) findViewById(R.id.menu);
         mActionMenus.setMainView(this);
 
         mLoadingView = (LoadingContainer) findViewById(R.id.loading_container);
-        mMask = findViewById(R.id.mask);
+//        mMask = findViewById(R.id.mask);
         mViewPager.setOnTouchListener(new View.OnTouchListener(){
 
             @Override
@@ -91,7 +89,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
         mAdapter = adapter;
         mAdapter.setViewPager(this);
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setPageTransformer(true, new ViewPager.PageTransformer() {
+        mViewPager.setPageTransformer(true, new PageTransformer() {
             @Override
             public void transformPage(View view, float position) {
                 int pageWidth = view.getWidth();
@@ -131,7 +129,8 @@ public class LockWallpaperPreviewView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
-                mAdapter.recordEvent(position % mAdapter.getSize(), RecordType.EVENT_SHOW);
+                WallpaperInfo info = mAdapter.getWallpaperInfo(mAdapter.getPositionInList(position));
+                mAdapter.recordEvent(RecordType.EVENT_SHOW, info);
                 mActionMenus.updateView();
 
                 if (listener != null) {
@@ -188,7 +187,11 @@ public class LockWallpaperPreviewView extends FrameLayout {
     private boolean mInExit;
     public void startExitAnim() {
         mInExit = true;
-        View view = mAdapter.getView(getCurrentItem());
+//        View view = mAdapter.getView(getCurrentItem());
+        View view = mViewPager.getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(getCurrentItem());
+        }
         if (view != null) {
             final View clickArea = view.findViewById(R.id.player_pager_click_area);
             clickArea.animate().alpha(0).setDuration(500).setStartDelay(100).setListener(null).start();
@@ -197,7 +200,11 @@ public class LockWallpaperPreviewView extends FrameLayout {
 
     public void showHint() {
         mActionMenus.show(true);
-        View view = mAdapter.getView(getCurrentItem());
+//        View view = mAdapter.getView(getCurrentItem());
+        View view = mViewPager.getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(getCurrentItem());
+        }
         if (view != null) {
             final View clickArea = view.findViewById(R.id.player_pager_click_area);
             clickArea.animate().alpha(1).setDuration(500).setStartDelay(100)
@@ -280,7 +287,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
         return mViewPager.getChildCount();
     }
 
-    public ViewPager getViewPager() {
+    public CustomViewPager getViewPager() {
         return mViewPager;
     }
 
@@ -302,15 +309,65 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     public void showMask() {
-        mMask.animate().alpha(1).start();
+//        if (mMask != null) {
+//            mMask.animate().alpha(1).start();
+//        }
+        View view = mAdapter.getView(getCurrentItem());
+        if (view != null) {
+            final View mask = view.findViewById(R.id.mask);
+            mask.animate().alpha(1).setListener(null).start();
+        }
     }
 
     public void hideMask() {
-        mMask.animate().alpha(0).start();
+//        if (mMask != null) {
+//            mMask.animate().alpha(0).start();
+//        }
+        View view = mAdapter.getView(getCurrentItem());
+        if (view != null) {
+            final View mask = view.findViewById(R.id.mask);
+            mask.animate().alpha(0).setListener(null).start();
+        }
+    }
+
+    public void showTextArea() {
+        View view = mAdapter.getView(getCurrentItem());
+        if (view != null) {
+            final View clickArea = view.findViewById(R.id.player_pager_click_area);
+            clickArea.animate().setStartDelay(50).setDuration(250L).alpha(1).setListener(null).start();
+        }
+    }
+
+    public void hideTextArea() {
+        View view = mAdapter.getView(getCurrentItem());
+        if (view != null) {
+            final View clickArea = view.findViewById(R.id.player_pager_click_area);
+            clickArea.animate().setStartDelay(50).setDuration(250L).alpha(0).setListener(null).start();
+        }
+    }
+
+    public void showTextCpArea() {
+        View view = mAdapter.getView(getCurrentItem());
+        if (view != null) {
+            final View cp = view.findViewById(R.id.player_pager_cp_area);
+            cp.animate().setStartDelay(50).setDuration(250L).alpha(1).setListener(null).start();
+        }
+    }
+
+    public void hideTextCpArea() {
+        View view = mAdapter.getView(getCurrentItem());
+        if (view != null) {
+            final View cp = view.findViewById(R.id.player_pager_cp_area);
+            cp.animate().setStartDelay(50).setDuration(250L).alpha(0).setListener(null).start();
+        }
     }
 
     public void toggleMenus() {
         mActionMenus.toggle();
+    }
+
+    public boolean isMenuShowing() {
+        return mActionMenus.isShowing();
     }
 
     @Override
@@ -336,9 +393,10 @@ public class LockWallpaperPreviewView extends FrameLayout {
             return;
         }
         int positionInViewPager = mViewPager.getCurrentItem();
+//        int positionInList = positionInViewPager % mAdapter.getSize();
         int positionInList = mAdapter.getPositionInList(positionInViewPager);
         mAdapter.cacheTargetView(positionInList);
-        startFadeTurnPageAnim(positionInList, positionInViewPager, null);
+		startFadeTurnPageAnim(positionInList, positionInViewPager, null);
         fakeScrollOnePage(positionInList, positionInViewPager, new PositionRunnable() {
             @Override
             public void run(int positionInList, int positionInViewPager) {
@@ -353,6 +411,7 @@ public class LockWallpaperPreviewView extends FrameLayout {
 
     private void startFadeTurnPageAnim(final int positionInList, final int positionInViewPager,
                                        final PositionRunnable finallyToDo) {
+//        View view = mAdapter.getView(positionInList);
         View view = mViewPager.getCurrentView();
         if (view == null) {
             view = mAdapter.getView(positionInList);
@@ -496,7 +555,9 @@ public class LockWallpaperPreviewView extends FrameLayout {
             return;
         }
         int positionInViewPager = mViewPager.getCurrentItem();
+//        int positionInList = positionInViewPager % mAdapter.getSize();
         int positionInList = mAdapter.getPositionInList(positionInViewPager);
+        mAdapter.cacheTargetView(positionInList);
         fakeScrollOnePage(positionInList, positionInViewPager, new PositionRunnable() {
             @Override
             public void run(int positionInList, int positionInViewPager) {
@@ -507,5 +568,15 @@ public class LockWallpaperPreviewView extends FrameLayout {
                 }
             }
         });
+    }
+
+    public void setTouchSlopEnable(boolean enable) {
+        mViewPager.setTouchSlopEnable(enable);
+    }
+
+    public void setShareAvailds(boolean... shareAvailds) {
+        if (mActionMenus != null) {
+            mActionMenus.setShareAvailds(shareAvailds);
+        }
     }
 }

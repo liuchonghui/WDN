@@ -1,11 +1,13 @@
 package android.support.v4.view;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 
 import com.mfashiongallery.emag.preview.LockWallpaperPreviewView;
+import com.mfashiongallery.emag.preview.model.WallpaperInfo;
 
 /**
  * Created by liuchonghui on 16/6/3.
@@ -15,6 +17,8 @@ public class CustomViewPager extends ViewPager {
     private float mInitialTouchY, mInitialTouchX;
     private ViewConfiguration mViewConfiguration;
     private LockWallpaperPreviewView mMainView;
+    private boolean DEBUG = false;
+    private boolean mTouchSlopEnable = true;
 
     public CustomViewPager(Context context) {
         super(context);
@@ -27,6 +31,9 @@ public class CustomViewPager extends ViewPager {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!mTouchSlopEnable) {
+            return false;
+        }
         if (isFakeDragging()) {
             return true;
         }
@@ -35,6 +42,10 @@ public class CustomViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        if (!mTouchSlopEnable) {
+            mMainView.toggleMenus();
+            return false;
+        }
         if (isFakeDragging()) {
             return true;
         }
@@ -94,6 +105,10 @@ public class CustomViewPager extends ViewPager {
         return mState;
     }
 
+    public void setTouchSlopEnable(boolean enable) {
+        mTouchSlopEnable = enable;
+    }
+
     @Override
     ItemInfo infoForPosition(int position) {
         ItemInfo info = super.infoForPosition(position);
@@ -137,12 +152,17 @@ public class CustomViewPager extends ViewPager {
 
     boolean clipPopulate;
 
-//    @Override
-//    void populate(int newCurrentItem) {
-////        clipPopulate = true;
-//        super.populate(newCurrentItem);
-////        clipPopulate = false;
-//    }
+    @Override
+    void populate(int newCurrentItem) {
+        super.populate(newCurrentItem);
+        if (DEBUG) {
+            ItemInfo info = super.infoForPosition(newCurrentItem);
+            if (info != null) {
+                String key = ((WallpaperInfo) ((View) info.object).getTag()).key;
+                Log.d("ACME", "current " + newCurrentItem + ", " + key);
+            }
+        }
+    }
 
 //    @Override
 //    ItemInfo addNewItem(int position, int index) {
