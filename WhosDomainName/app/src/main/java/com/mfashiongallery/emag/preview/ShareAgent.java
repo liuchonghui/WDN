@@ -45,6 +45,10 @@ public class ShareAgent {
                 "com.sina.weibo.composerinde.ComposerDispatchActivity"));
         shareIntent.addCategory(Intent.CATEGORY_DEFAULT);
         shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+//        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        shareIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(shareIntent);
     }
 
@@ -68,6 +72,7 @@ public class ShareAgent {
         shareIntent.addCategory(Intent.CATEGORY_DEFAULT);
         shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        shareIntent.putExtra(Intent.EXTRA_TEXT, sb.toString());
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(shareIntent);
     }
 
@@ -89,6 +94,7 @@ public class ShareAgent {
                 "com.tencent.mm.ui.tools.ShareToTimeLineUI"));
 //        shareIntent.addCategory(Intent.CATEGORY_DEFAULT);
         shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(shareIntent);
     }
 
