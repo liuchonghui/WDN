@@ -313,7 +313,10 @@ public class LockWallpaperPreviewView extends FrameLayout {
 //        if (mMask != null) {
 //            mMask.animate().alpha(1).start();
 //        }
-        View view = mAdapter.getView(getCurrentItem());
+        View view = getViewPager().getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(getCurrentItem());
+        }
         if (view != null) {
             final View mask = view.findViewById(R.id.mask);
             mask.animate().alpha(1).setListener(null).start();
@@ -324,7 +327,10 @@ public class LockWallpaperPreviewView extends FrameLayout {
 //        if (mMask != null) {
 //            mMask.animate().alpha(0).start();
 //        }
-        View view = mAdapter.getView(getCurrentItem());
+        View view = getViewPager().getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(getCurrentItem());
+        }
         if (view != null) {
             final View mask = view.findViewById(R.id.mask);
             mask.animate().alpha(0).setListener(null).start();
@@ -332,7 +338,10 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     public void showTextArea() {
-        View view = mAdapter.getView(getCurrentItem());
+        View view = getViewPager().getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(getCurrentItem());
+        }
         if (view != null) {
             final View clickArea = view.findViewById(R.id.player_pager_click_area);
             clickArea.animate().setStartDelay(50).setDuration(250L).alpha(1).setListener(null).start();
@@ -340,7 +349,10 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     public void hideTextArea() {
-        View view = mAdapter.getView(getCurrentItem());
+        View view = getViewPager().getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(getCurrentItem());
+        }
         if (view != null) {
             final View clickArea = view.findViewById(R.id.player_pager_click_area);
             clickArea.animate().setStartDelay(50).setDuration(250L).alpha(0).setListener(null).start();
@@ -348,7 +360,10 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     public void showTextCpArea() {
-        View view = mAdapter.getView(getCurrentItem());
+        View view = getViewPager().getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(getCurrentItem());
+        }
         if (view != null) {
             final View cp = view.findViewById(R.id.player_pager_cp_area);
             cp.animate().setStartDelay(50).setDuration(250L).alpha(1).setListener(null).start();
@@ -356,7 +371,10 @@ public class LockWallpaperPreviewView extends FrameLayout {
     }
 
     public void hideTextCpArea() {
-        View view = mAdapter.getView(getCurrentItem());
+        View view = getViewPager().getCurrentView();
+        if (view == null) {
+            view = mAdapter.getView(getCurrentItem());
+        }
         if (view != null) {
             final View cp = view.findViewById(R.id.player_pager_cp_area);
             cp.animate().setStartDelay(50).setDuration(250L).alpha(0).setListener(null).start();
