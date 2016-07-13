@@ -7,6 +7,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,7 +30,7 @@ import android.support.v4.view.CustomViewPager;
 
 import tool.whosdomainname.android.R;
 
-
+@SuppressLint("NewApi")
 public class LockWallpaperPreviewView extends FrameLayout {
     private CustomViewPager mViewPager;
     private LockWallpaperPreviewAdapter mAdapter;
