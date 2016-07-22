@@ -1,12 +1,14 @@
 
 package com.mfashiongallery.emag.preview;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.android.overlay.ApplicationUncaughtHandler;
@@ -21,6 +23,7 @@ import java.util.List;
 import tool.whosdomainname.activity.BaseFragmentActivity;
 import tool.whosdomainname.android.R;
 
+@SuppressLint("NewApi")
 public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
     private final static String LOG_TAG = "LockWallpaperPreview";
     public final static boolean DEBUG = Log.isLoggable(LOG_TAG, Log.DEBUG);
@@ -37,7 +40,9 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
         super.onCreate(savedInstanceState);
         Thread.setDefaultUncaughtExceptionHandler(new ApplicationUncaughtHandler(this));
         setContentView(R.layout.preview_wallpaper_activity);
-
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mGson = new Gson();
