@@ -5,10 +5,12 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import com.android.overlay.ApplicationUncaughtHandler;
@@ -17,6 +19,8 @@ import com.google.gson.reflect.TypeToken;
 import com.mfashiongallery.emag.preview.model.PicEnum;
 import com.mfashiongallery.emag.preview.model.WallpaperInfo;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,11 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        try {
+            setNavigationBarColor(getWindow(), R.color.transparent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mGson = new Gson();
@@ -222,5 +231,19 @@ public class LockWallpaperPreviewActivity extends BaseFragmentActivity {
             }
         }
         return new boolean[] {wechatInstalled, wechatInstalled, weiboInstalled, qzoneInstalled, qqInstalled};
+    }
+
+    void setNavigationBarColor(Window window, int color) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+        if (Build.VERSION.SDK_INT >= 23) {
+            Class<?>[] paramType = new Class<?>[1];
+            paramType[0] = int.class;
+            Object[] values = new Object[1];
+            values[0] = color;
+
+            Method targetMethod = window.getClass().getMethod("setNavigationBarColor", paramType);
+            targetMethod.setAccessible(true);
+//            window.setNavigationBarColor(color);
+            targetMethod.invoke(window, values);
+        }
     }
 }
